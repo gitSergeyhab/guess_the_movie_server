@@ -6,6 +6,6 @@ import { userRouter } from "./user";
 const router = Router();
 
 router.use('/movies', moviesRouter);
-router.use('/user', userRouter);
+router.use('/users', userRouter);
 
 export {router}
