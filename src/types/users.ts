@@ -1,8 +1,13 @@
-export interface UserData {
+import { Request } from "express";
+
+export interface SecureUserData {
     name: string;
-    password: string;
-    timestamp: number;
+    createdAr: Date;
     rate: number
+}
+
+export interface UserData extends SecureUserData  {
+    password: string;
 }
 
 export interface Users {
@@ -16,4 +21,15 @@ export interface UserLoginData {
 
 export interface UserRegistrationData extends UserLoginData {
     passwordRepeat: string;
+}
+
+export interface UserJWT {
+    username: string;
+    userId: string,
+    iat: number,
+    exp: number
+}
+
+export interface AuthRequest extends Request {
+    user: UserJWT
 }

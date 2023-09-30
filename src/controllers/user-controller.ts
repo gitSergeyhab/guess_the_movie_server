@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCode } from "../const";
-import { UserLoginData, UserRegistrationData } from "../types/users";
+import { AuthRequest, UserLoginData, UserRegistrationData } from "../types/users";
 import { checkData } from "../services/check-data";
 import { ApiError } from "../middlewares/error-middleware";
 import { tokenService } from "../services/token-service";
@@ -13,7 +13,7 @@ class UserController {
         try {
             const body = req.body as UserRegistrationData;
             if (!checkData.checkRegistrationData(body)) {
-                throw new ApiError(StatusCode.BadRequest, ErrorMessages.BadRequest)
+                throw ApiError.BadRequest(ErrorMessages.BadRequest)
             }
             const {password, username} = body;
             await userService.createUser({password, username})
@@ -28,11 +28,11 @@ class UserController {
         try {
             const body = req.body as UserLoginData;
             if (!checkData.checkLoginData(body)) {
-                throw new ApiError(StatusCode.BadRequest, ErrorMessages.BadRequest)
+                throw  ApiError.BadRequest(ErrorMessages.BadRequest)
             }
             const {password, username} = body;
             const userData = await userService.GetUserByLoginData({password, username})
-            const token = tokenService.createToken(userData.name);
+            const token = tokenService.createToken(userData.name, userData.userId);
             return res.status(StatusCode.Ok).json({token, user: userData});
         } catch (err) {
             const {message} = err;
@@ -40,8 +40,23 @@ class UserController {
         }
     }
 
-    async getAllUsers(req: Request, res: Response) {
+    async checkAuth(req: AuthRequest, res: Response) {
         try {
+            console.log('checkAuth Try Start')
+            const token = req.headers.authorization;
+            tokenService.checkToken(token);
+            console.log('checkAuth Try End')
+            return res.status(StatusCode.Ok).json('OK');
+        } catch (err) {
+            console.log('checkAuth Try Err', {err})
+
+            throw ApiError.UnauthorizedError()
+        }
+    }
+
+    async getAllUsers(req: AuthRequest, res: Response) {
+        try {
+            console.log(req.user, 'req.user')
             const users = await userService.getAllUsers();
             return res.status(StatusCode.Ok).json(users);
         } catch (err) {
