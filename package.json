@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
+    "start:memory": "node --inspect=5858 --max-old-space-size=8192 -r ts-node/register ./src/index.ts",
     "start:watch": "nodemon",
     "build": "tsc"
   },
