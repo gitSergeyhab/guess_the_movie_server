@@ -14,19 +14,49 @@ import { ErrorMessages } from "../messages/error-messages";
 
 
 class TestsDBController {
-    async writeRusMovieTestsToDB (req: AuthRequest, res: Response) {
+    // async writeTestsToDB (req: AuthRequest, res: Response) {
+
+    //     try {
+    //         const {query, params} = req;
+    //         console.log({query, params} , 'writeTestsToDB')
+    //         const rusPersons = transformDataService.getPersonsFromMovies(rusMovies.docs , 7) 
+    //         const rusPersonQuestionService = new PersonQuestionService(rusPersons);
+    //         const ussrPersons = transformDataService.getPersonsFromMovies(ussrMovies.docs , 7) 
+    //         const ussrPersonQuestionService = new PersonQuestionService(ussrPersons);
+    //         const rusQuestion = rusPersonQuestionService.getTestsGuessPersonByMovie(500, 4);
+    //         const ussrQuestion = ussrPersonQuestionService.getTestsGuessPersonByMovie(500, 4);
+    //         console.log(rusQuestion.length, ussrQuestion.length , 'writeTestsToDB')
+    //         await writeDataService.writeRusTestsToDB([...rusQuestion, ...ussrQuestion])
+    //         return res.status(StatusCode.Added).json('Тесты были добавлены')
+
+    //     } catch (err) {
+    //         console.error({err})
+    //         const {message} = err
+    //         throw new ApiError(StatusCode.ServerError, message || ErrorMessages.ServerError)
+    //     }
+    // }
+
+    async writeTestsToDB (req: AuthRequest, res: Response) {
+        try {
+            const {query, params} = req;
+            console.log({query, params} , 'writeTestsToDB')
+
+            return res.status(StatusCode.Added).json('Тесты были добавлены')
+
+        } catch (err) {
+            console.error({err})
+            const {message} = err
+            throw new ApiError(StatusCode.ServerError, message || ErrorMessages.ServerError)
+        }
+    }
+
+    async deleteTestsFromDB (req: AuthRequest, res: Response) {
 
         try {
-            // const {query, params} = req;
-            const rusPersons = transformDataService.getPersonsFromMovies(rusMovies.docs , 7) 
-            const rusPersonQuestionService = new PersonQuestionService(rusPersons);
-            const ussrPersons = transformDataService.getPersonsFromMovies(ussrMovies.docs , 7) 
-            const ussrPersonQuestionService = new PersonQuestionService(ussrPersons);
-            const rusQuestion = rusPersonQuestionService.getTestsGuessPersonByMovie(500, 4);
-            const ussrQuestion = ussrPersonQuestionService.getTestsGuessPersonByMovie(500, 4);
+            const {query, params} = req;
+            console.log({query, params} , 'deleteTestsFromDB')
 
-            await writeDataService.writeRusTestsToDB([...rusQuestion, ...ussrQuestion])
-            return res.status(StatusCode.Added).json('Данные были добавлены')
+            return res.status(StatusCode.Deleted).json('Тесты были удалены')
 
         } catch (err) {
             console.error({err})
@@ -36,22 +66,7 @@ class TestsDBController {
     }
 
 
-    // async writeGuessPersonByRusMovieTestsToDB (req: AuthRequest, res: Response) {
-
-    //     try {
-    //         const IMDBPersons = transformDataService.getPersonsFromMovies(moviesIMDB as Movie[], 7) 
-    //         const IMDBPersonQuestionService = new PersonQuestionService(IMDBPersons);
-    //         const rusPersons = transformDataService.getPersonsFromMovies(rusMovies.docs , 7) 
-    //         const rusPersonQuestionService = new PersonQuestionService(rusPersons);
-    //         const ussrPersons = transformDataService.getPersonsFromMovies(ussrMovies.docs , 7) 
-    //         const ussrPersonQuestionService = new PersonQuestionService(ussrPersons);
-
-    //         const question = rusPersonQuestionService.getTestsGuessPersonByMovie(1, 4);
-
-    //     } catch (err) {
-
-    //     }
-    // }
+ 
 }
 
 

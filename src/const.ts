@@ -1,6 +1,7 @@
 export const enum StatusCode {
     Ok = 200,
     Added = 201,
+    Deleted = 204,
     NotFound = 404,
     BadRequest = 400,
     ServerError = 500,
