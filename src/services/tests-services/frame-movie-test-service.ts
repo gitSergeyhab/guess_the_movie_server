@@ -44,7 +44,7 @@ export class FrameMovieTestService {
             question: { imageUrl: randomFrame.url },
             questionText: TestText[TestType.MovieByFrame],
             variants: shuffleArray(movies.map(({id, name, enName, year}) => ({id, name, enName, year}))) ,
-            testType: TestType.MovieByFrame
+            testType: TestType.MovieByFrame,
         }
     }
     
@@ -62,13 +62,13 @@ export class FrameMovieTestService {
             question: {  name, year, enName  },
             questionText: TestText[TestType.FrameByMovie],
             variants: shuffleArray([...frames, answerFrame]),
-            testType: TestType.FrameByMovie
+            testType: TestType.FrameByMovie,
         }
     }
 
     createAllTests = (category: OperationCategory) => {
-        const movieByYearTests = getTestList(this.createGuessFrameByMovieTest, TestRatio[category][TestType.FrameByMovie]);
-        const yearByMovieTests = getTestList(this.createGuessMovieByFrameTest, TestRatio[category][TestType.MovieByFrame]);
+        const movieByYearTests = getTestList(this.createGuessFrameByMovieTest, TestRatio[category][TestType.FrameByMovie], category);
+        const yearByMovieTests = getTestList(this.createGuessMovieByFrameTest, TestRatio[category][TestType.MovieByFrame], category);
         return [ ...movieByYearTests, ...yearByMovieTests ];
     }
 }

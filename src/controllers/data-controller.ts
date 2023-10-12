@@ -21,6 +21,7 @@ import { MovieWithCategory, MovieWithImageList } from "../types/movie-types";
 import { testService } from "../services/tests-services/tests-service";
 import { shuffleArray } from "../utils/utils";
 import { getRandomUniqueArray } from "../utils/test-utils";
+import { mongoService } from "../services/mongo-service";
 
 
 
@@ -30,22 +31,21 @@ class DataController {
 
         try {
             const {query: q} = req;
-            // const query = q as unknown as AdminDataRequestQuery;
+            const query = q as unknown as AdminDataRequestQuery;
             // const data = await dataService.readDataFromDb({
             //     action: OperationAction.Write,
             //     category: OperationCategory.Ussr,
             //     content: OperationContent.Images
             // });
 
+            const data = await mongoService.readTests(query.category)
 
-            // return res.status(StatusCode.Added).json((data as MovieWithCategory[])
-            //     // .map(({name, slogan, budget, id}) => ({ name, id }))
-            //     )
 
-            const category = OperationCategory.Ussr;
-            const tests = await testService.createTests(category);
-            const testSet = shuffleArray(getRandomUniqueArray(tests, 13))
-            return res.status(StatusCode.Added).json({testSet})
+            return res.status(StatusCode.Added).json((data)
+                // .map(({name, slogan, budget, id}) => ({ name, id }))
+                )
+
+    
         } catch (err) {
             console.error({err})
             const {message} = err

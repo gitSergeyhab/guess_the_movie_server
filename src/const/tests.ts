@@ -83,8 +83,8 @@ export const TestRatio = {//293
 }
 
 export const TestText = {
-    [TestType.PersonByMovie]: 'Кто снимался в этом филбме',
-    [TestType.MovieByPerson]: 'В каком фильме он снимался',
+    [TestType.PersonByMovie]: 'Кто снимался в этом фильме',
+    [TestType.MovieByPerson]: 'Угадайте фильм по актеру',
     [TestType.MovieByFrame]: 'Угадайте фильм по кадру',
     [TestType.FrameByMovie]: 'Угадайте кадр по фильму',
     [TestType.PersonByPhoto]: 'Кто на фото',

@@ -1,3 +1,4 @@
+import { OperationCategory } from "../const/admin-const";
 import { TEST_TYPE_MULTIPLIER } from "../const/tests";
 import { MovieWithCategory } from "../types/movie-types";
 import { ITest } from "../types/test-type";
@@ -59,8 +60,9 @@ export const getAnswerAndVariants =  <T>(array: T[], idName: string, length: num
 }
 
 
-export const getTestList = (createTestFn: () => ITest, ratio: number) => 
-    ratio ? new Array(ratio * 2).fill(null).map(createTestFn) : [];
+
+export const getTestList = (createTestFn: () => ITest, ratio: number, category: OperationCategory) => 
+    ratio ? new Array(ratio * TEST_TYPE_MULTIPLIER).fill(null).map(createTestFn).map((item) => ({...item, category})) : [];
 
 
 const YEAR_RANGE = 5;    

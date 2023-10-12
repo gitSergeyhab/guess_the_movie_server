@@ -6,18 +6,20 @@ import { FrameMovieTestService } from "./frame-movie-test-service";
 import { MoviesTestService } from "./movies-test-service";
 import { PersonTestService } from "./person-test-service";
 
-interface IChoseTestService {
+
+
+interface CreateTests {
     category: OperationCategory;
-    content: OperationContent;
+    movies: MovieWithCategory[];
+    persons: PersonWithMovieList[];
+    movieImages: MovieWithImageList[]; 
+    
 }
 
 class TestService {
 
 
-    async createTests(category: OperationCategory) {
-        const movies = await mongoService.readMovies(category);
-        const persons = await mongoService.readPersons(category);
-        const movieImages = await mongoService.readMovieImages(category); 
+    async createTests({category, movieImages, movies, persons}: CreateTests) {
 
         const moviesLength = movies.length;
         const personsLength = persons.length;

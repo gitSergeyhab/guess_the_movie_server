@@ -1,7 +1,7 @@
 import { OperationCategory } from "../../const/admin-const";
 import { TEST_TYPE_MULTIPLIER, TEST_VARIANTS_COUNT, TestRatio, TestText, TestType } from "../../const/tests";
 import { MovieWithCategory } from "../../types/movie-types";
-import { ITest } from "../../types/test-type";
+import { ITest, ITestWithCategory } from "../../types/test-type";
 import { filterMoviesWithSlogan, getAnswerAndVariants, getAnswerAndVariantsForBudget, getRandomYears, getSloganVariant, getTestList, getYearVariant } from "../../utils/test-utils";
 import { getRandomItemFromList, getRandomNumberByMax, shuffleArray } from "../../utils/utils";
 
@@ -22,7 +22,8 @@ export class MoviesTestService {
             answer: answer.id,
             question: { year: answer.year },
             questionText: TestText[TestType.MovieByYear],
-            variants: preVariants.map(({ id, category, enName, name, poster }) => ({ id, category, enName, name, imageUrl: poster.previewUrl })),
+            variants: preVariants.map(({ id, enName, name, poster }) => 
+                ({ id, enName, name, imageUrl: poster.previewUrl })),
             testType: TestType.MovieByYear
         }
     }
@@ -35,7 +36,7 @@ export class MoviesTestService {
             answer: year,
             question: getYearVariant(randomMovie),
             questionText: TestText[TestType.YearByMovie],
-            variants: randomYears.map((year) =>({ year })),
+            variants: randomYears.map((year) =>({ year, id: year })),
             testType: TestType.YearByMovie
         }
     }
@@ -58,7 +59,7 @@ export class MoviesTestService {
             answer: answer.slogan,
             question: { enName, imageUrl: poster.url, name, year },
             questionText: TestText[TestType.SloganByMovie],
-            variants: preVariants.map(({slogan}) => ({slogan})),
+            variants: preVariants.map(({slogan}) => ({slogan, id: slogan})),
             testType: TestType.SloganByMovie
         }
     }
@@ -103,8 +104,8 @@ export class MoviesTestService {
             answer: firstRandomMovie.id,
             question: { imageUrl: randomPerson.photo, name: randomPerson.name },
             questionText: TestText[TestType.MovieByPerson],
-
-            variants: shuffleArray(randomMovies.map(({ id, enName, name, poster, year }) => ({ enName, imageUrl: poster.url, name, year, id }))) ,
+            variants: shuffleArray(randomMovies.map(({ id, enName, name, poster, year }) => 
+                ({ enName, imageUrl: poster.url, name, year, id }))) ,
             testType: TestType.MovieByPerson
         }
     }
@@ -112,16 +113,18 @@ export class MoviesTestService {
 
 
     createAllTests = (category: OperationCategory) => {
-        const movieByYearTests = getTestList(this.getGuessMovieByYearTest, TestRatio[category][TestType.MovieByYear]);
-        const yearByMovieTests = getTestList(this.getGuessYearByMovieTest, TestRatio[category][TestType.YearByMovie]);
-        const movieBySloganTests = getTestList(this.getGuessMovieBySloganTest, TestRatio[category][TestType.MovieBySlogan]);
-        const sloganByMovieTests = getTestList(this.getGuessSloganByMovieTest, TestRatio[category][TestType.SloganByMovie]);
-        const movieByBudgetTests = getTestList(() => this.getGuessMovieByBudgetTest(category), TestRatio[category][TestType.SloganByMovie]);
-        const movieByPersonTests = getTestList(this.getGuessMovieByPersonTest, TestRatio[category][TestType.MovieByPerson]);
+        const movieByYearTests = getTestList(this.getGuessMovieByYearTest, TestRatio[category][TestType.MovieByYear], category);
+        const yearByMovieTests = getTestList(this.getGuessYearByMovieTest, TestRatio[category][TestType.YearByMovie], category);
+        const movieBySloganTests = getTestList(this.getGuessMovieBySloganTest, TestRatio[category][TestType.MovieBySlogan], category);
+        const sloganByMovieTests = getTestList(this.getGuessSloganByMovieTest, TestRatio[category][TestType.SloganByMovie], category);
+        const movieByBudgetTests = getTestList(() => this.getGuessMovieByBudgetTest(category), TestRatio[category][TestType.SloganByMovie], category);
+        const movieByPersonTests = getTestList(this.getGuessMovieByPersonTest, TestRatio[category][TestType.MovieByPerson], category);
         return [
             ...movieByPersonTests, 
-            ...movieByYearTests, ...yearByMovieTests, 
-            ...movieBySloganTests, ...sloganByMovieTests, 
+            ...movieByYearTests, 
+            ...yearByMovieTests, 
+            ...movieBySloganTests, 
+            ...sloganByMovieTests, 
             ...movieByBudgetTests
         ];
     }

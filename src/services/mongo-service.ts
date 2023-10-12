@@ -31,6 +31,7 @@ class MongoService {
 
 
     async readTests(category: OperationCategory) {
+        console.log({category})
         return await TestModel.find({category}).exec() as ITestFromMongo[];
     }
 
@@ -51,8 +52,13 @@ class MongoService {
         await PersonModel.insertMany(persons);
     }
 
+
     async writeTests(tests: ITestWithCategory[]) {
         await TestModel.insertMany(tests);
+    }
+
+    async deleteTests(category: OperationCategory) {
+        await TestModel.deleteMany({category});
     }
 
 

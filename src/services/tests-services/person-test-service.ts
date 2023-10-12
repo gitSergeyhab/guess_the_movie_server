@@ -92,10 +92,11 @@ export class PersonTestService {
     }
 
     createAllTests = (category: OperationCategory) => {
-        const personByMovieTests = getTestList(this.createGuessPersonByMovieTest, TestRatio[category][TestType.PersonByMovie]);
-        const personByPhotoTests = getTestList(this.createGuessPersonByPhotoTest, TestRatio[category][TestType.PersonByPhoto]);
-        const photoByPersonTests = getTestList(this.createGuessPhotoByPersonTest, TestRatio[category][TestType.PhotoByPerson]);
-        return [...personByMovieTests, ...personByPhotoTests, ...photoByPersonTests]
+        const personByMovieTests = getTestList(this.createGuessPersonByMovieTest, TestRatio[category][TestType.PersonByMovie], category);
+        const personByPhotoTests = getTestList(this.createGuessPersonByPhotoTest, TestRatio[category][TestType.PersonByPhoto], category);
+        const photoByPersonTests = getTestList(this.createGuessPhotoByPersonTest, TestRatio[category][TestType.PhotoByPerson], category);
+        return [...personByMovieTests,  ...personByPhotoTests, ...photoByPersonTests
+        ]
     }
 }
 
