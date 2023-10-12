@@ -1,30 +1,27 @@
-import {Schema, model} from 'mongoose';
-import { AnswerType, QuestionType } from '../const/tests';
-import { ITest, IVariant } from '../types/test-type';
-
-
-
+import {Schema, Types, model} from 'mongoose';
+import { ITest, ITestWithCategory, IVariant } from '../types/test-type';
+import { OperationCategory } from '../const/admin-const';
+import { TEST_CATEGORIES, TEST_TYPES } from '../const/tests';
 
 const Variant = new Schema<IVariant>({
-    id: {type: Number, required: true},
+    // id: {type: String, required: true},
     enName: {type: String},
     name: {type: String},
     year: {type: Number},
     imageUrl: {type: String},
     slogan: {type: String},
-})
 
+})
 
 // !!! ЭТО НЕ ТЕСТОВАЯ МОДЕЛЬ. ЭТО МОДЕЛЬ CRUD ТЕСТОВ  !!!
-const Test = new Schema<ITest>({
+const Test = new Schema<ITestWithCategory>({
     questionText: {type: String, required: true},
-    questionType: {type: String, required: true},
     question: {type: Variant, required: true},
-    variantsType: {type: String, required: true},
     variants: {type: [Variant], required: true},
     answer: {type: Number, required: true},
-})
+    category: {type: String, enum: TEST_CATEGORIES, required: true},
+    testType: {type: String, enum: TEST_TYPES, required: true}
+}, {timestamps: true})
 
-export const RusTestModel = model('RusTests', Test);
-export const SerialTestModel = model('SerialTest', Test);
-export const WorldTestModel = model('WorldTest', Test);
+
+export const TestModel = model('Test', Test);

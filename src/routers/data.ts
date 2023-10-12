@@ -6,5 +6,6 @@ const dataRouter  = Router();
 
 dataRouter.post('/', asyncHandler(dataController.writeDataToDB));
 dataRouter.delete('/:category/:content', asyncHandler(dataController.deleteDataFromDB));
+dataRouter.get('/', asyncHandler(dataController.readDataFromDB));
 
 export {dataRouter}

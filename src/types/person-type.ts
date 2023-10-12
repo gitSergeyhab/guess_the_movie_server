@@ -1,3 +1,4 @@
+import { OperationCategory } from "../const/admin-const"
 
 
 export interface SimpleMovie {
@@ -16,12 +17,14 @@ export interface PersonWithMovies {
     personId: number,
     personName: string,
     personPhoto: string,
-    personMovies: SimpleMovieDict
+    personMovies: SimpleMovieDict,
+    category: OperationCategory
 }
 
 export interface PersonWithMovieList {
     personId: number,
     personName: string,
     personPhoto: string,
-    personMovies: SimpleMovie[]
+    personMovies: SimpleMovie[],
+    category: OperationCategory
 }

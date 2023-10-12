@@ -7,7 +7,7 @@ const userRouter = Router();
 
 userRouter.post('/registration', asyncHandler(userController.registration));
 userRouter.post('/login', asyncHandler(userController.login));
-userRouter.get('/', authMiddleware, asyncHandler(userController.getAllUsers));
+// userRouter.get('/', authMiddleware, asyncHandler(userController.getAllUsers));
 // userRouter.get('/', authMiddleware, asyncHandler(userController.readMovieDataFromKPToList));
 
 userRouter.get('/auth', asyncHandler(userController.checkAuth));

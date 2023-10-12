@@ -1,4 +1,49 @@
-export interface MovieData {
+import { OperationCategory } from "../const/admin-const";
+import { Image } from "./image-types";
+
+export interface Movie {
+    votes:       Votes;
+    movieLength: number;
+    id:          number;
+    name:        string;
+    slogan:      null | string;
+    year:        number;
+    budget?:     Budget;
+    poster:      Poster;
+    genres:      Name[];
+    countries:   Name[];
+    persons:     Person[];
+    enName:      null | string;
+  }
+  
+  export interface Budget {
+    value:    number;
+    currency: string;
+  }
+  
+
+  
+  export interface Name {
+    name: string;
+  }
+  
+  export interface Person {
+    id:    number;
+    photo: string;
+    name:  null | string;
+  }
+  
+  export interface Poster {
+    url:        string;
+    previewUrl: string;
+  }
+  
+  export interface Votes {
+    kp: number;
+  }
+
+
+  export interface MovieData {
     docs:  Movie[];
     total: number;
     limit: number;
@@ -6,58 +51,16 @@ export interface MovieData {
     pages: number;
 }
 
-export interface Movie {
-    rating:      Rating;
-    votes:       Rating;
-    id:          number;
-    name:        string;
-    slogan:      null | string;
-    year:        number;
-    poster:      Poster;
-    genres:      Country[];
-    countries:   Country[];
-    persons:     Person[];
-    enName?:     null | string;
-    movieLength: number | null;
-    budget?:     Budget;
-    fees?:       Fees;
+export interface MovieWithImageList {
+  id: number;
+  name: string;
+  enName?: string;
+  year: number;
+  category:  OperationCategory;
+  images: Image[];
 }
 
-export interface Budget {
-    value:    number;
-    currency: string;
-}
 
-// export enum Currency {
-//     A = "A$",
-//     Currency = "€",
-//     Dem = "DEM",
-//     Empty = "$",
-//     Fluffy = "£",
-//     Frf = "FRF",
-//     Purple = "₽",
-//     Р = "р.",
-// }
-
-export interface Country {
-    name: string;
-}
-
-export interface Fees {
-    world: Budget;
-}
-
-export interface Person {
-    id:    number;
-    photo: string;
-    name:  null | string;
-}
-
-export interface Poster {
-    url:        string;
-    previewUrl: string;
-}
-
-export interface Rating {
-    kp: number;
+export interface MovieWithCategory extends Movie {
+  category: OperationCategory
 }

@@ -1,7 +1,8 @@
-import { AnswerType, QuestionType } from "../const/tests";
+import { Types } from "mongoose";
+import { OperationCategory } from "../const/admin-const";
+import { AnswerType, QuestionType, TestType } from "../const/tests";
 
 export interface IVariant {
-    id: number;
     enName?: string;
     name?: string;
     year?: number;
@@ -11,11 +12,22 @@ export interface IVariant {
 
 export interface ITest {
     questionText: string;
-    questionType: QuestionType;
+    // questionType: QuestionType;
     question: IVariant;
-    variantsType: AnswerType;
+    // variantsType: AnswerType;
     variants: IVariant[]
     answer: string|number;
+    testType: TestType
+}
+
+
+export interface ITestWithCategory extends ITest {
+    category: OperationCategory
+}
+
+export interface ITestFromMongo extends ITest {
+     _id: Types.ObjectId;
+     category: OperationCategory
 }
 
 // VARIANTS

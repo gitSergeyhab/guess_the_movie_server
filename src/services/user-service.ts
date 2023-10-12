@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { SALT, StatusCode } from "../const";
 import { UserModel } from "../models/users";
-import { getRandomRate } from "../types/rando-utils";
+import { getRandomRate } from "../types/random-utils";
 import { ApiError } from "../middlewares/error-middleware";
 import { UserLoginData } from "../types/users";
 import { ErrorMessages } from "../messages/error-messages";

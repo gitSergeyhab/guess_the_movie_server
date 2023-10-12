@@ -1,6 +1,6 @@
 export const enum OperationCategory {
     Rus = 'rus',
-    Series = 'series',
+    Ussr = 'ussr',
     World = 'world',
     All = 'all'
   }

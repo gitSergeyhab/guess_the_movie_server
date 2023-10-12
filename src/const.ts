@@ -45,6 +45,13 @@ export const SELECTED_MOVIES_FIELDS = [
     'persons.id', 'persons.photo', 'persons.name',
 ];
 
+export const SELECTED_IMAGES_FIELDS = [
+    'url', 
+    'previewUrl', 
+    'movieId', 
+];
+
+
 export const enum Countries {
     USSR = 'СССР',
     RUS = 'Россия'
