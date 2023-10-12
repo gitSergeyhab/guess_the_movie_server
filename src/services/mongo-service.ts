@@ -8,6 +8,12 @@ import { PersonWithMovieList } from "../types/person-type";
 import { ITestFromMongo, ITestWithCategory } from "../types/test-type";
 
 
+export interface StatsCategoryCount {
+    _id: OperationCategory, count: number
+}
+const mongoQueryForCountByCategory = {$group: { _id:  "$category", count: { $sum: 1 }}}
+
+
 
 class MongoService {
     async readMovies(category: OperationCategory) {
@@ -62,6 +68,27 @@ class MongoService {
 
     async deletePersons(category: OperationCategory) {
         await PersonModel.deleteMany({category});
+    }
+
+
+
+    async getMoviesStats() {
+        return await MovieModel.aggregate([mongoQueryForCountByCategory]);
+    }
+
+    async getPersonsStats() {
+        return await PersonModel.aggregate([mongoQueryForCountByCategory]);
+    }
+
+    async getMovieImagesStats() {
+        return await MovieImageModel.aggregate([mongoQueryForCountByCategory]);
+    }
+
+    async getStats() {
+        const movies: StatsCategoryCount[] = await this.getMoviesStats();
+        const persons: StatsCategoryCount[] = await this.getPersonsStats();
+        const images: StatsCategoryCount[] = await this.getMovieImagesStats();
+        return {movies, persons, images}
     }
 
 }

@@ -3,6 +3,7 @@ import { AuthRequest } from "../types/users";
 import { StatusCode } from "../const";
 import { ApiError } from "../middlewares/error-middleware";
 import { ErrorMessages } from "../messages/error-messages";
+import { AdminDataRequestQuery } from "../types/admin-types";
 
 
 
@@ -10,8 +11,9 @@ class TestsDBController {
 
     async writeTestsToDB (req: AuthRequest, res: Response) {
         try {
-            const {query, params} = req;
-            console.log({query, params} , 'writeTestsToDB')
+            const {query: q} = req;
+            const query = q as unknown as AdminDataRequestQuery;
+            console.log({query} , 'writeTestsToDB')
 
             
             return res.status(StatusCode.Added).json('Тесты были добавлены')
