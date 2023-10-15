@@ -7,7 +7,7 @@ import { gameController } from "../controllers/game-controller";
 const gameRouter  = Router();
 
 
-gameRouter.get('/single-player-game', asyncHandler(gameController.getRandomTests));
+gameRouter.get('/single-player-game', asyncHandler(gameController.getSinglePlayerGame));
 gameRouter.get('/check-answer', asyncHandler(gameController.checkAnswer));
 
 export {gameRouter}

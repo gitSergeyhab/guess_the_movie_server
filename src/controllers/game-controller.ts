@@ -12,7 +12,7 @@ import { ITestFromMongo } from "../types/test-type";
 
 
 class GameController {
-    async getRandomTests(req: AuthRequest, res: Response) {
+    async getSinglePlayerGame(req: AuthRequest, res: Response) {
         const {query: q} = req;
         const query = q as unknown as AdminDataRequestQuery;
         const data = await gameService.readRandomTests(query.category, 3)
@@ -29,6 +29,8 @@ class GameController {
         console.log({isAnswerRight})
         return res.status(StatusCode.Ok).json(isAnswerRight)
     }
+
+
 }
 
 export const gameController = new GameController()
