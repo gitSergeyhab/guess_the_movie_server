@@ -21,7 +21,7 @@ export class ApiError extends Error {
     //     return new ApiError(403, 'access denied')
     // }
 
-    static BadRequest(message: string, errors: string[] = []) {
+    static BadRequest(message: string = 'Bad Request', errors: string[] = []) {
         return new ApiError(400, message, errors)
     }
 
