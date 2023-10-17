@@ -26,12 +26,8 @@ interface CheckNextLevel  {
     isLastLevel: boolean
 }
 
-
-
-
 interface GamePropsFound   {
     oldGame: SinglePlayerGame;
-    // isNextLevel: boolean;
     isLastTest: boolean;
     isLastLevel: boolean;
     isLost: boolean;
@@ -56,27 +52,16 @@ class GameService {
     }
 
 
-
-
-    getResultPoints ({points, lives, skips}: SinglePlayerGame) {
-        return points + lives + skips;
-    }
-
-    
-
-
     async getRightAnswer({answerId, testId}: {testId: string, answerId: string|number}) {
         const test = await gameService.getTestById(testId);
         return test.answer;
     }
-
 
     checkAnswer ({answerId, rightAnswer}: {rightAnswer: string|number, answerId: string|number}) {
         return  String(rightAnswer) === String(answerId);
     }
 
     checkNextLevel ({currentTestNumber, isLost, isLastLevel}: CheckNextLevel) {
-
         if (isLost || isLastLevel) {
             return false
         }
@@ -92,11 +77,10 @@ class GameService {
     }
 
     getTestNumber ({isLastLevel, isLastTest, isLost, oldGame}: GamePropsFound) {
-        console.log({isLastLevel, isLastTest, isLost, oldGame}, 'getTestNumber______!')
         if (isLost) {
             return 0;
         }
-        if (isLastLevel ) {
+        if (isLastLevel && isLastTest ) {
             return TEST_COUNT - 1;
         }
         if (isLastTest) {
@@ -146,7 +130,6 @@ class GameService {
         if (isLost) {
             return 0;
         }
-
         if (isLastLevel && isLastTest) {
             return 0;
         }
@@ -156,22 +139,17 @@ class GameService {
         if (isSkip) {
             return skips - 1;
         }
-
         return skips;
     }
 
-    getPoints ({isLastLevel, isLastTest, isLost, oldGame, isAnswerRight, isSkip}: GamePropsFound) {
+    getPoints ({isLastTest, isLost, oldGame, isAnswerRight}: GamePropsFound) {
         const {points, lives, skips} = oldGame;
         if (isLost) {
             return points;
         }
-        if (isLastLevel && isLastTest) {
-            return this.getResultPoints(oldGame) - (isAnswerRight ? 0 : 1) - (isSkip ? 1 : 0);
-        }
         if (isLastTest) {
-            return this.getResultPoints(oldGame) - (isAnswerRight ? 0 : 1) - (isSkip ? 1 : 0);
+            return points + lives + skips - 1 + (isAnswerRight ? 2 : 0);
         }
-
         return points + (isAnswerRight ? 1 : 0);
     }
 
@@ -179,13 +157,11 @@ class GameService {
         if (isSkip === true) {
             return TestResult.SKIP
         }
-
         return isAnswerRight ? TestResult.RIGHT : TestResult.WRONG;
     }
 
     getResults ({oldGame, isAnswerRight, isSkip}: GamePropsFound) {
         const {results} = oldGame;
-
         const result = this.getTestResult({isAnswerRight, isSkip});
         const lastResults = results[results.length-1];
         const areNewResults = lastResults.length === TEST_COUNT;
@@ -206,18 +182,15 @@ class GameService {
         if (isLastTest) {
             return GameStatus.NextLevel;
         }
-
         return GameStatus.Active;
     }
 
     getGameOnAnswer ({isAnswerRight, userId}: {isAnswerRight: boolean, userId: string}) {
-
         const oldGame = localDbService.readGame(userId);
         const {currentTestNumber, level, lives, skips} = oldGame;
         const isLastLevel = level === MAX_LEVEL - 1;
         const isLastTest = TEST_COUNT === currentTestNumber + 1
         const isLost = this.checkLost({isAnswerRight, lives, skips})
-        // const isNextLevel = this.checkNextLevel({currentTestNumber, isLost, isLastLevel})
 
         const game: SinglePlayerGame = {
             ...oldGame,
@@ -229,7 +202,6 @@ class GameService {
             results: this.getResults({oldGame, isAnswerRight, isLastLevel, isLastTest, isLost}), 
             status: this.getStatus({oldGame, isAnswerRight, isLastLevel, isLastTest, isLost}),
         }
-
         return game;
     }
 
@@ -243,8 +215,6 @@ class GameService {
         const isLastLevel = level === MAX_LEVEL - 1;
         const isLost = false;
         const isLastTest = TEST_COUNT === currentTestNumber + 1
-        // const isNextLevel = this.checkNextLevel({currentTestNumber, isLost, isLastLevel})
-
 
         const game: SinglePlayerGame = {
             ...oldGame,
@@ -260,10 +230,8 @@ class GameService {
     }
 
     async startGameHandler({category, userId}: StartGame) {
-        console.log({userId,category});
         const game = localDbService.createGame({category, userId});
         const tests = await this.readRandomTests(category, TEST_COUNT);
-        console.log({game,tests});
         return {game, tests}
     }
 
@@ -272,7 +240,6 @@ class GameService {
         const isAnswerRight = this.checkAnswer({rightAnswer, answerId})
         const game = this.getGameOnAnswer({isAnswerRight, userId});
         localDbService.updateGame({gameId, userId, updateData: game})
-        // console.log({game, rightAnswer});
         return {game, rightAnswer}
     }
 
@@ -283,17 +250,15 @@ class GameService {
     }
 
     //for new lvl
-    async getTests({category, userId}: StartGame) {
+    async getTests({category}: StartGame) {
         const tests = await this.readRandomTests(category, TEST_COUNT);
         return tests;
     }
 
     async exitGameHandler ({gameId, userId}: {gameId: string, userId: string}) {
         const game = this.getGameOnSkip({userId});
-        console.log('exitGameHandler', {game})
         return game;
     }
 }
-
 
 export const gameService = new GameService();
