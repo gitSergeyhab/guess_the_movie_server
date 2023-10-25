@@ -61,6 +61,7 @@ class LocalDbService {
     createGame({category, userId}: CreateGame) {
         const game: SinglePlayerGame = {
             category,
+            userId,
             ...startDataGame,
             gameId: crypto.randomUUID()
         };

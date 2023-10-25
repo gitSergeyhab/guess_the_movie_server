@@ -1,10 +1,11 @@
 import { OperationCategory } from "../const/admin-const";
-import { MAX_LEVEL, TEST_COUNT, TestResult } from "../const/game-const";
+import { GameType, MAX_LEVEL, TEST_COUNT, TestResult } from "../const/game-const";
 import { ApiError } from "../middlewares/error-middleware";
 import { TestModel } from "../models/tests";
 import { CheckAnswerForSinglePlayer, GameStatus, SinglePlayerGame } from "../types/game-types";
 import { ITestFromMongo } from "../types/test-type";
 import { getLivesPassesByLvl } from "../utils/game-utils";
+import { gameResultService } from "./game-result-service";
 import { localDbService } from "./local-db-sevice";
 import { mongoService } from "./mongo-service";
 
@@ -258,6 +259,13 @@ class GameService {
     async exitGameHandler ({gameId, userId}: {gameId: string, userId: string}) {
         const game = this.getGameOnSkip({userId});
         return game;
+    }
+
+    async saveGameResult (game: SinglePlayerGame) {
+        const {category, gameId, points, status, userId} = game;
+        if ([GameStatus.Won, GameStatus.Lost].includes(status)) {
+            await gameResultService.saveGame({ category, points, type: GameType.SinglePlayer, userId, gameId, status })
+        }
     }
 }
 

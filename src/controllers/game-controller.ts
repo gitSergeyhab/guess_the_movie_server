@@ -37,7 +37,8 @@ class GameController {
             const {userId} = user;
             const {testId, answerId, gameId} = body;
             const data = await gameService.checkAnswerHandler({answerId, gameId, testId, userId})
-            return res.status(StatusCode.Added).json(data)
+            await gameService.saveGameResult(data.game);
+            return res.status(StatusCode.Added).json(data);
 
         } catch (err) {
             console.error({err})
@@ -46,13 +47,15 @@ class GameController {
         }
     }
 
+
     async skipTest(req: AuthRequest, res: Response) {
         try {
             const { body, user } = req;
             const { userId } = user;
             const { gameId } = body;
-            const data = await gameService.skipTestHandler({gameId, userId})
-            return res.status(StatusCode.Added).json(data)
+            const game = await gameService.skipTestHandler({gameId, userId})
+            await gameService.saveGameResult(game);
+            return res.status(StatusCode.Added).json(game)
 
         } catch (err) {
             console.error({err})
@@ -83,6 +86,7 @@ class GameController {
             const {userId} = user;
             const {gameId} = body;
             const game = await gameService.exitGameHandler({userId, gameId});
+            await gameService.saveGameResult(game);
             return res.status(StatusCode.Added).json(game)
 
         } catch (err) {

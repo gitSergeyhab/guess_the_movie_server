@@ -9,3 +9,11 @@ export const enum TestResult {
     WRONG = 'WRONG',
     SKIP = 'SKIP'
   }
+
+export const enum GameType {
+  SinglePlayer = 'SinglePlayer',
+  SinglePlayerTime = 'SinglePlayerTime',
+  MultiPlayer = 'MultiPlayer',
+}
+
+export const GAME_TYPES = [GameType.MultiPlayer, GameType.SinglePlayer, GameType.SinglePlayerTime]

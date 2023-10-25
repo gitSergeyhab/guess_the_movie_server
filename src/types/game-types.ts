@@ -20,6 +20,7 @@ export const enum GameStatus {
 
 
 export interface SinglePlayerGame {
+  userId: string;
   gameId: string;
   category: OperationCategory;
   level: number;
