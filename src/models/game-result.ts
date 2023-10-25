@@ -12,7 +12,7 @@ const GameResultSchema = new Schema<IGameResult>({
     type: {type: String, enum: GAME_TYPES, required: true},
     userId: {type: String, required: true},
     gameId: {type: String, required: true},
-    status: {type: String, enum: [GameStatus.Won, GameStatus.Lost] , required: true}
+    status: {type: String, enum: [GameStatus.Won, GameStatus.Lost, GameStatus.Exit] , required: true}
 }, {timestamps: true})
 
 

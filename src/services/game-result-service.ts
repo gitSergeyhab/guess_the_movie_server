@@ -45,7 +45,7 @@ class GameResultService {
             .find({ category, type })
             .sort({ [sort]: order })
             .skip(offset).limit(limit)
-            .exec()as IGameResult[]
+            .exec() as IGameResult[]
     }
 
     async getGameResultsByUser({limit, offset, userId, order=-1, sort=SortFields.Points}: GetGameResultsByUser) {

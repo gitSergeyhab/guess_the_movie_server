@@ -84,10 +84,8 @@ class GameController {
         try {
             const {body, user} = req;
             const {userId} = user;
-            const {gameId} = body;
-            const game = await gameService.exitGameHandler({userId, gameId});
-            await gameService.saveGameResult(game);
-            return res.status(StatusCode.Added).json(game)
+            await gameService.exitGameHandler({userId});
+            return res.status(StatusCode.Added).json('game over')
 
         } catch (err) {
             console.error({err})

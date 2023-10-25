@@ -15,7 +15,8 @@ export const enum GameStatus {
   NextLevel = 'NextLevel',
   Error = 'Error',
   None = 'None',
-  Starting = 'Starting'
+  Starting = 'Starting',
+  Exit = 'Exit'
 }
 
 

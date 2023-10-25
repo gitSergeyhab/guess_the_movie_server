@@ -256,9 +256,10 @@ class GameService {
         return tests;
     }
 
-    async exitGameHandler ({gameId, userId}: {gameId: string, userId: string}) {
-        const game = this.getGameOnSkip({userId});
-        return game;
+    async exitGameHandler ({ userId}: {userId: string }) {
+        const game = localDbService.readGame(userId);
+        const {category, gameId, points} = game 
+        await gameResultService.saveGame({ category, points, type: GameType.SinglePlayer, userId, gameId, status: GameStatus.Exit })
     }
 
     async saveGameResult (game: SinglePlayerGame) {
